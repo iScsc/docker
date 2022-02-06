@@ -64,6 +64,45 @@ if ! shopt -oq posix; then
   fi
 fi
 
+question () {
+  QUESTIONS="/etc/.questions"
+  usage () {
+    cat << EOF
+Usage: question [nb | all] [number]
+
+\`number\` should be between 1 and $(wc -l < "$QUESTIONS").
+\`nb\` and \`all\` are flags.
+
+Examples:
+     \`question nb\` gives the number of questions 
+     \`question all\` shows all the questions.
+     \`question 13\` shows question no 13.
+EOF
+  }
+
+  [ -z "$1" ] && { echo "unknown usage of command question"; echo "use -h or --help"; return; }
+
+  case "$1" in
+    -h|--help) usage; return;;
+    all) cat "$QUESTIONS"; return;;
+    nb) echo "there are $(wc -l < "$QUESTIONS") questions in total."; return;;
+    *) ;;
+  esac
+
+  if [ -n "$1" ] && [ "$1" -eq "$1" ] 2>/dev/null; then
+    if [ "$1" -lt 1 ] || [ "$1" -gt $(wc -l < "$QUESTIONS") ]; then
+      echo "question out of range (should be between 1 and $(wc -l < "$QUESTIONS"), got '$1')"
+      return
+    fi
+    grep "^$1\." "$QUESTIONS"
+  else
+    echo "number expected (got '$1')"
+  fi
+}
+
 PS1="\e[32m\u@\h: \e[36m\w \e[31m>\e[39m "
 clear
 cat /etc/motd
+echo
+cat /etc/hints
+echo
