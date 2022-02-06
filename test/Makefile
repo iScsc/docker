@@ -6,7 +6,7 @@ challenge: build run
 
 build:
 	@echo "building challenge"
-	@sudo docker build -t $(CHALLENGE) .
+	@sudo docker build -t $(CHALLENGE) . > ./.log/build
 
 run:
 	@echo "running challenge"
