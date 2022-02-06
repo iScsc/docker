@@ -100,7 +100,7 @@ EOF
   fi
 }
 
-PS1="\e[32m\u@\h: \e[36m\w \e[31m>\e[39m "
+PS1="\[\e[32m\]\u@\h: \[\e[36m\]\w \[\e[31m\]>\[\e[39m\] "
 clear
 cat /etc/motd
 echo
